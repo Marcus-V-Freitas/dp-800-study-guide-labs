@@ -1,0 +1,23 @@
+@baseUrl = http://localhost:5000
+@contentType = application/json
+
+###
+# @name list_products
+# @title Listar Produtos (Basic)
+GET {{baseUrl}}/api/Product
+
+?? status == 200
+
+###
+# @name create_product
+# @title Criar Produto (Basic)
+POST {{baseUrl}}/api/Product
+Content-Type: {{contentType}}
+
+{
+    "Id": 100,
+    "Name": "Teclado Mecânico",
+    "Price": 450.00
+}
+
+?? status == 201

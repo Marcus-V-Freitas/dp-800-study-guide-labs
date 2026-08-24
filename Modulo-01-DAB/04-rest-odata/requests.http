@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:5003
+@contentType = application/json
+
+###
+# @name list_products_all
+# @title Listar Produtos (Básico)
+GET {{baseUrl}}/api/Product
+
+?? status == 200
+
+###
+# @name filter_products_gt
+# @title [OData] Filtrar Preço Maior que 1000
+GET {{baseUrl}}/api/Product?$filter=Price gt 1000
+
+?? status == 200
+
+###
+# @name filter_products_and
+# @title [OData] Filtro Múltiplo (AND)
+GET {{baseUrl}}/api/Product?$filter=Name eq 'Mouse' and Price lt 200
+
+?? status == 200
+
+###
+# @name orderby_products
+# @title [OData] Ordenação e Paginação (Top 2 mais caros)
+GET {{baseUrl}}/api/Product?$orderby=Price desc&$first=2
+
+?? status == 200
+
+###
+# @name select_products
+# @title [OData] Seleção Específica de Colunas
+GET {{baseUrl}}/api/Product?$select=Name,Price
+
+?? status == 200

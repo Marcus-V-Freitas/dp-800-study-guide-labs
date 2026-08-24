@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:5001
+@contentType = application/json
+
+###
+# @name anon_get
+# @title [ANONYMOUS] Listar (deve passar - 200 OK)
+GET {{baseUrl}}/api/Product
+X-MS-API-ROLE: anonymous
+
+?? status == 200
+
+###
+# @name anon_post_forbidden
+# @title [ANONYMOUS] Tentar criar (deve falhar - 403 Forbidden)
+POST {{baseUrl}}/api/Product
+X-MS-API-ROLE: anonymous
+Content-Type: {{contentType}}
+
+{
+    "Id": 99,
+    "Name": "Produto Bloqueado",
+    "Price": 99.90
+}
+
+?? status == 403
+
+###
+# @name auth_post
+# @title [AUTHENTICATED] Criar (deve passar - 201 Created)
+POST {{baseUrl}}/api/Product
+X-MS-API-ROLE: authenticated
+Content-Type: {{contentType}}
+
+{
+    "Id": 10,
+    "Name": "Headset Gamer 7.1",
+    "Price": 350.00
+}
+
+?? status == 201
+
+###
+# @name admin_delete
+# @title [ADMIN] Excluir (deve passar - 204 No Content)
+DELETE {{baseUrl}}/api/Product/Id/10
+X-MS-API-ROLE: admin
+
+?? status == 204

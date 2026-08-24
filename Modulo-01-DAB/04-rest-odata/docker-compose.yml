@@ -1,0 +1,16 @@
+include:
+  - ../shared/docker-compose.db.yml
+
+services:
+  dab:
+    image: mcr.microsoft.com/azure-databases/data-api-builder:latest
+    env_file: ../../.env
+    environment:
+      DATABASE_CONNECTION_STRING: "Server=sqlserver,1433;Database=${MSSQL_DATABASE:-DemoDb};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True"
+    ports:
+      - "5003:5000"
+    volumes:
+      - ./dab-config.json:/App/dab-config.json:ro
+    depends_on:
+      sqlserver-init:
+        condition: service_completed_successfully

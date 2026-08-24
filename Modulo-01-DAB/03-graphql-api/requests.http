@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:5002
+@contentType = application/json
+
+###
+# @name graphql_list_products
+# @title [GraphQL] Listar todos (Query)
+POST {{baseUrl}}/graphql
+Content-Type: {{contentType}}
+
+{
+    "query": "query { products { items { Id Name Price } } }"
+}
+
+?? status == 200
+?? js response.parsedBody.data.products.items.length > 0
+
+###
+# @name graphql_filter_products
+# @title [GraphQL] Listar com Filtros (Query)
+POST {{baseUrl}}/graphql
+Content-Type: {{contentType}}
+
+{
+    "query": "query { products(filter: { Price: { gt: 1000 } }) { items { Id Name Price } } }"
+}
+
+?? status == 200
+
+###
+# @name graphql_create_product
+# @title [GraphQL] Criar Produto (Mutation)
+POST {{baseUrl}}/graphql
+Content-Type: {{contentType}}
+
+{
+    "query": "mutation { createProduct(item: { Id: 15, Name: \"Webcam\", Price: 250.00 }) { Id Name Price } }"
+}
+
+?? status == 200
